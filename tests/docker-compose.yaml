@@ -1,0 +1,17 @@
+---
+version: '3.7'
+services:
+  jenkins-controller:
+    image: "jenkins-controller:$PIPELINE_ID"
+    build:
+      context: ./jenkins-controller
+    environment:
+      PLATFORM_ID: local-test
+    secrets:
+      - example_secret
+    ports:
+      - 8080:8080
+
+secrets:
+  example_secret:
+    file: secrets/example_secret

@@ -1,0 +1,5 @@
+configuration-as-code:latest
+extended-choice-parameter:latest
+job-dsl:latest
+matrix-auth:latest
+slack:latest

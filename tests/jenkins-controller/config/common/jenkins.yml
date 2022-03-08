@@ -1,0 +1,4 @@
+unclassified:
+  location:
+    url: ${JENKINS_URL:-}
+    adminAddress: Jenkins CI <jenkins@iceburg.net>
