@@ -1,5 +1,8 @@
 jenkins:
   securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
     # saml:
     #   binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
     #   displayNameAttributeName: "displayname"

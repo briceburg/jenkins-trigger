@@ -12,6 +12,21 @@ services:
     ports:
       - 8080:8080
 
+  jenkins-trigger-test:
+    image: foo
+    profiles: ["test"]
+    command: |
+      sh -c '
+        # boilerplate for generating a user's API token
+        # https://github.com/jenkins-infra/jenkins.io/pull/4296#discussion_r783111115
+        url=https://jenkins/
+        user=admin
+        pass=s3cr3t
+        crumb=$(curl -s -u $user:$pass -c /tmp/cookies ${url}crumbIssuer/api/xml'?xpath=concat(//crumbRequestField,":",//crumb)')
+        token=$(curl -s -u $user:$pass -b /tmp/cookies -H $crumb -d newTokenName=general ${url}user/$user/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken | jq -r .data.tokenValue)
+        rm /tmp/cookies
+      '
+
 secrets:
   example_secret:
     file: secrets/example_secret
