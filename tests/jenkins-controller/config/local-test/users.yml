@@ -1,0 +1,6 @@
+jenkins:
+  securityRealm:
+    local:
+      users:
+       - id: test-user
+         password: test-user-password

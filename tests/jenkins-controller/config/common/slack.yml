@@ -1,0 +1,7 @@
+unclassified:
+  slackNotifier:
+    botUser: false
+    room: "#jenkins-notifications"
+    sendAsText: false
+    teamDomain: "iceburg"
+    tokenCredentialId: "slack-token"

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+main(){
+  # cleanup legacy sshd plugin
+  if [ -e "$JENKINS_REF/plugins/sshd.jpi" ] && [ ! -e "$JENKINS_HOME/plugins/sshd.jpi.version_from_image" ]; then
+    echo "[INFO] cleaning up old sshd plugin" >&2
+    rm -rf "$JENKINS_HOME/plugins/sshd" "$JENKINS_HOME/plugins/sshd.jpi"
+  fi
+
+  # copy in per-platform configuration (if it exists...)
+  echo "PLATFORM_ID: ${PLATFORM_ID:=null}" >&2
+  local platform_config="$JENKINS_REF/config.dist/$PLATFORM_ID"
+
+  if [ -d "$platform_config" ]; then
+    echo "found $platform_config. copying to $CASC_JENKINS_CONFIG..." >&2
+    rm -rf "${CASC_JENKINS_CONFIG:?}/$PLATFORM_ID"
+    cp -a "$JENKINS_REF/config.dist/$PLATFORM_ID/"*  "$CASC_JENKINS_CONFIG/"
+  else
+    echo "missing $platform_config. skipping custom configuration..." >&2
+  fi
+
+  # dumping information about plugin updates (what's in snapshot vs. what's baked into image)
+  local copy_ref_file="$JENKINS_HOME/copy_reference_file.log"
+  [ -e "$copy_ref_file"  ] && mv "$copy_ref_file" "$copy_ref_file.previous"
+  echo "[INFO] printing copy_reference_file.log from jenkins.sh startup..." >&2
+  VERBOSE=true /usr/local/bin/jenkins.sh cat "$copy_ref_file" >&2
+
+  # start jenkins...
+  exec /sbin/tini -- /usr/local/bin/jenkins.sh "$@"
+}
+
+main "$@"

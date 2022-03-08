@@ -1,0 +1,17 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+    # saml:
+    #   binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    #   displayNameAttributeName: "displayname"
+    #   emailAttributeName: "email"
+    #   groupsAttributeName: "group"
+    #   idpMetadataConfiguration:
+    #     period: 0
+    #     url: ${saml_url_app}
+    #   logoutUrl: ${saml_url_logout}
+    #   maximumAuthenticationLifetime: 86400
+    #   usernameAttributeName: "username"
+    #   usernameCaseConversion: "lowercase"

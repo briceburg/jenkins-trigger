@@ -1,0 +1,4 @@
+jenkins:
+  numExecutors: 1 # allow one job to execute on controller at time
+  labelString: "jenkins-controller jenkins"
+  mode: EXCLUSIVE

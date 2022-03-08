@@ -1,0 +1,66 @@
+jobs:
+  - script: >
+      folder('tests'){
+        description('jobs related to testing against this jenkins')
+      }
+
+  - script: >
+      job('tests/trigger-success') {
+        label('jenkins-controller')
+        steps {
+          shell('echo success')
+        }
+      }
+
+      job('tests/trigger-failure') {
+        label('jenkins-controller')
+        steps {
+          shell('echo failure; exit 1')
+        }
+      }
+
+      job('tests/trigger-timeout') {
+        label('jenkins-controller')
+        steps {
+          shell('sleep 10')
+        }
+      }
+
+      job('tests/trigger-parameter') {
+        label('jenkins-controller')
+        parameters {
+          choiceParam('LOG_LEVEL', ['INFO', 'DEBUG'], 'logging verbosity')
+        }
+        steps {
+          shell('if [ "$LOG_LEVEL" = "DEBUG" ]; then echo "DEBUG set"; else exit 1; fi')
+        }
+      }
+
+      job('tests/trigger-checkboxes') {
+        label('jenkins-controller')
+        logRotator {
+          numToKeep(8)
+          artifactNumToKeep(8)
+        }
+        
+        steps {
+          shell('echo $COLORS')
+        }
+
+        configure {
+          project->
+            project / 'properties' << 'hudson.model.ParametersDefinitionProperty' {
+              parameterDefinitions {
+                'com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition' {
+                  name 'COLORS'
+                  quoteValue 'false'
+                  saveJSONParameterToFile 'false'
+                  visibleItemCount '15'
+                  type 'PT_CHECKBOX'
+                  value "red,green,blue"
+                  multiSelectDelimiter ','
+                }
+              }
+            }
+        }
+      }
