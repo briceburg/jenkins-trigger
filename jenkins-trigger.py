@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 #
+# @source https://github.com/briceburg/jenkins-trigger
 # @requires requests
 #
 # usage: jenkins-trigger.py [-h] [--user USER] [--token TOKEN] [-p [name=value] ...] [--no-wait] [-vv] job_url
